@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">multiTool</string>
+    <string name="trash_text_icon">Корзинка</string>
+    <string name="add_text_icon">Записки</string>
+    <string name="add_text_button">Добавить</string>
+    <string name="add_body_new_top">Записка пишется здеся</string>
+    <string name="add_body_new_title">Заголовок тута</string>
+    <string name="add_new_note_button">Сохранить</string>
+    <string name="dialog_delete_update">Что прикажите сделать мой господин?</string>
+    <string name="redact_text_lable">Редактор заметки</string>
+    <string name="trash_title">Корзинка</string>
+    <string name="trash_menu">Корзинка</string>
+    <string name="compass_text">Компас</string>
+    <string name="description_compass_image">стрелка компаса</string>
+    <string name="description_compass_image2">стрелка компаса</string>
+    <string name="compass_text_turn_info_right">Север правее на: </string>
+    <string name="compass_text_turn_info_left">Север левее на: </string>
+    <string name="compass_text_degree"> градусов</string>
+    <string name="flash_linc_text">Фонарик</string>
+    <string name="tvsensor_text_gps">Приоритет GPS</string>
+    <string name="tvsensor_text_gsm_wifi">Приоритет: GSM и Wi-Fi</string>
+    <string name="latitude_text_main">Широта</string>
+    <string name="_0_00">0</string>
+    <string name="longitude_text_main">Долгота</string>
+    <string name="altitude_text_main">Высота</string>
+    <string name="accurasy_text_main">Точность</string>
+    <string name="speed_text_main">Скорость</string>
+    <string name="sensor_text_main">Сенсор</string>
+    <string name="update_text_main">Обновить</string>
+    <string name="off_update_text_main">Откл.</string>
+    <string name="location_update_text_main">Обновление местоположения</string>
+    <string name="gps_savepower">GPS/SavePower</string>
+    <string name="address_text_main">Адрес:</string>
+
+</resources>

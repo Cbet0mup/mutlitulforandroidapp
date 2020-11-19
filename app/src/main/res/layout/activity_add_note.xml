@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.pavel.multitool.AddNoteActivity"
+    android:padding="16dp"
+    android:background="@drawable/background_image"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/add_title_new_note"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:inputType="textCapWords"
+        android:hint="@string/add_body_new_title"/>
+
+    <EditText
+        android:id="@+id/add_body_new_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:inputType="textMultiLine|textCapWords"
+        android:lines="5"
+        android:hint="@string/add_body_new_top"
+        android:padding="8dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="73dp"
+        android:background="@drawable/reeple_button"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/add_new_note_button"
+        android:textSize="17sp"
+        android:onClick="saveNote"
+        />
+
+
+</LinearLayout>
