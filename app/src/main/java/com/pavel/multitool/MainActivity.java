@@ -40,4 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private void init(){
         flashClass = new FlashClass(this);
     }
+
+    public void getTracker(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+    }
 }

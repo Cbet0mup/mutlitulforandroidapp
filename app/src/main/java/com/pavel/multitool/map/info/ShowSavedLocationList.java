@@ -1,11 +1,11 @@
 package com.pavel.multitool.map.info;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.location.Location;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.pavel.multitool.R;
 
@@ -14,6 +14,7 @@ import java.util.List;
 public class ShowSavedLocationList extends AppCompatActivity {
 
     ListView lv_savedLocations;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

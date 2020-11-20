@@ -26,9 +26,9 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.pavel.multitool.map.info.LocationBreedcrumb;
-import com.pavel.multitool.map.info.MapsActivity;
 import com.pavel.multitool.map.info.ServiceMapData;
 import com.pavel.multitool.map.info.ShowSavedLocationList;
+import com.pavel.multitool.map.info.TrekerMapActivity;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -48,7 +48,8 @@ public class MapActivity extends AppCompatActivity {
 
                                                     //текущее местоположение
     private Location currentLocation;
-                                                     //список точек локации
+
+    //список точек локации
     List<Location> savedLocation;
 
     LocationRequest locationRequest;
@@ -105,57 +106,40 @@ public class MapActivity extends AppCompatActivity {
             }
         };
                                                                             //чистка списка точек
-        btnNewWayPoints.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                savedLocation.clear();
+        btnNewWayPoints.setOnClickListener(v -> savedLocation.clear());
+
+        swGps.setOnClickListener(v -> {
+            if (swGps.isChecked()) {
+                                                                 //приоритетно используется GPS
+                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                tvSensor.setText(R.string.tvsensor_text_gps);
+            } else {
+                locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+                tvSensor.setText(R.string.tvsensor_text_gsm_wifi);
             }
         });
 
-        swGps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (swGps.isChecked()) {
-                                                                     //приоритетно используется GPS
-                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                    tvSensor.setText(R.string.tvsensor_text_gps);
-                } else {
-                    locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-                    tvSensor.setText(R.string.tvsensor_text_gsm_wifi);
-                }
+        swLocationUpdates.setOnClickListener(v -> {
+            if (swLocationUpdates.isChecked()) {
+                // вкл трекинг
+                startLocationUpdates();
+                startService( new Intent(MapActivity.this, ServiceMapData.class));
+            } else {
+                //отклык трекинг
+                stopLocationUpdates();
+                stopService(new Intent(MapActivity.this, ServiceMapData.class));
+
             }
         });
 
-        swLocationUpdates.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (swLocationUpdates.isChecked()) {
-                    // вкл трекинг
-                    startLocationUpdates();
-                    startService( new Intent(MapActivity.this, ServiceMapData.class));
-                } else {
-                    //отклык трекинг
-                    stopLocationUpdates();
-                    stopService(new Intent(MapActivity.this, ServiceMapData.class));
-
-                }
-            }
+        btnClearPointList.setOnClickListener(v -> {
+            Intent intent = new Intent(MapActivity.this, ShowSavedLocationList.class);
+            startActivity(intent);
         });
 
-        btnClearPointList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, ShowSavedLocationList.class);
-                startActivity(intent);
-            }
-        });
-
-        btnShowMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MapActivity.this, MapsActivity.class);
-                startActivity(i);
-            }
+        btnShowMap.setOnClickListener(v -> {
+            Intent i = new Intent(MapActivity.this, TrekerMapActivity.class);
+            startActivity(i);
         });
         updateGPS();
     }
@@ -277,6 +261,7 @@ public class MapActivity extends AppCompatActivity {
 
         LocationBreedcrumb locationBreedcrumb = (LocationBreedcrumb) getApplicationContext();
         savedLocation = locationBreedcrumb.getMyLocations();
+        //savedLocation.add(currentLocation);
         //колличество сохранённых путевых точек
         tvWayPointCounts.setText(Integer.toString(savedLocation.size()));
 

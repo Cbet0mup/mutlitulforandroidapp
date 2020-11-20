@@ -214,6 +214,7 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="#8BC34A"
         android:text="Очистить список точек"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_label_crumb_count" />
@@ -225,6 +226,7 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="#8BC34A"
         android:text="Поглазеть на список точек"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_new_way_point" />
@@ -236,6 +238,7 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="#8BC34A"
         android:text="Поглазеть на карте"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_sho_wayPoint_list" />

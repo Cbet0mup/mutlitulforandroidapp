@@ -31,5 +31,7 @@
     <string name="location_update_text_main">Обновление местоположения</string>
     <string name="gps_savepower">GPS/SavePower</string>
     <string name="address_text_main">Адрес:</string>
+    <string name="track_map_logo_main">Трекер</string>
+    <string name="title_activity_treker_map">Map</string>
 
 </resources>
