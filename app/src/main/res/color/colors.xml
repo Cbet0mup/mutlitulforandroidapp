@@ -4,5 +4,8 @@
         <color android:name="colorPrimary">#3F51B5</color>
         <color android:name="colorPrimaryDark">#303F9F</color>
         <color android:name="colorAccent">#FF4081</color>
+
+        <item android:state_enabled="false"
+            />
     </resources>
 </selector>

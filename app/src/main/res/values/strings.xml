@@ -33,5 +33,10 @@
     <string name="address_text_main">Адрес:</string>
     <string name="track_map_logo_main">Трекер</string>
     <string name="title_activity_treker_map">Map</string>
+    <string name="tv_label_crumb_count_text">Путевые точки:</string>
+    <string name="tv_crumb_count_text">0</string>
+    <string name="btn_new_way_point_text">Очистить список точек</string>
+    <string name="btn_sho_wayPoint_list_text">Список точек</string>
+    <string name="tn_show_map_text">Поглазеть на карте</string>
 
 </resources>

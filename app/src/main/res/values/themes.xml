@@ -3,10 +3,10 @@
     <style name="Theme.MultiTool" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#010E29</item>
-        <item name="colorPrimaryVariant">#44444400</item>
-        <item name="colorOnPrimary">#44444400</item>
+        <item name="colorPrimaryVariant">#010E29</item>
+        <item name="colorOnPrimary">#44000000</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#44444400</item>
+        <item name="colorSecondary">#4462FF00</item>
         <item name="colorSecondaryVariant">#222222</item>
         <item name="colorOnSecondary">#222222</item>
         <!-- Status bar color. -->

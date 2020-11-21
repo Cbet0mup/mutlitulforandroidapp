@@ -5,6 +5,8 @@
     <color name="yellow_green">#80FF00</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="color_icon_menu">#FF9FD116</color>
+    <color name="switch_color_off">#6F98B3</color>
+    <color name="switch_color_on">#87FF00</color>
 <!--    <color name="colorAccent">#03DAC5</color>-->
 <!--    <color name="colorAccent">#03DAC5</color>-->
 </resources>

@@ -9,7 +9,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -43,8 +42,8 @@ public class MapActivity extends AppCompatActivity {
     private Button btnNewWayPoints, btnClearPointList, btnShowMap;
     private Switch swLocationUpdates, swGps;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private ServiceMapData data;
-    //boolean updateOn = false;
+    //private ServiceMapData data;
+    boolean updateOn = false;
 
                                                     //текущее местоположение
     private Location currentLocation;
@@ -78,7 +77,7 @@ public class MapActivity extends AppCompatActivity {
         swLocationUpdates = findViewById(R.id.sw_locationsupdates);
         swGps = findViewById(R.id.sw_gps);
 
-        data = new ServiceMapData();
+        //data = new ServiceMapData();
 
         btnNewWayPoints = findViewById((R.id.btn_new_way_point));
         btnClearPointList = findViewById(R.id.btn_sho_wayPoint_list);
@@ -97,12 +96,13 @@ public class MapActivity extends AppCompatActivity {
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
 
-                //int myData = data.getData();
-                //Toast.makeText(MapActivity.this, "data = :" + myData, Toast.LENGTH_LONG).show();
+                Toast.makeText(MapActivity.this, "Location callback", Toast.LENGTH_LONG).show();
                                                                             //сохраним лакацию
                 currentLocation = locationResult.getLastLocation();
-                updateUIValues(locationResult.getLastLocation());
-                compareLatLongData();
+
+                if(compareLatLongData()){
+                    updateUIValues(locationResult.getLastLocation());
+                }
             }
         };
                                                                             //чистка списка точек
@@ -113,7 +113,7 @@ public class MapActivity extends AppCompatActivity {
                                                                  //приоритетно используется GPS
                 locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
                 tvSensor.setText(R.string.tvsensor_text_gps);
-            } else {
+            } else {                                            //приоритет gsm and wi-fi данным
                 locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
                 tvSensor.setText(R.string.tvsensor_text_gsm_wifi);
             }
@@ -144,8 +144,8 @@ public class MapActivity extends AppCompatActivity {
         updateGPS();
     }
 
-    @SuppressLint("SetTextI18n")
-    private void compareLatLongData() {
+    @SuppressLint("SetTextI18n")                    //стравнение данных, чтобы не забивать список дубликатами одной точки
+    private boolean compareLatLongData() {
         if (savedLocation.size() > 0) {
             BigDecimal latitOld = new BigDecimal(Double.toString(savedLocation.get(savedLocation.size() - 1).getLatitude()));
             latitOld = latitOld.setScale(4, BigDecimal.ROUND_DOWN);
@@ -162,11 +162,18 @@ public class MapActivity extends AppCompatActivity {
             if (latitOld.compareTo(latitNew) < 0 || longitNew.compareTo(longitOld) < 0) {
                 savedLocation.add(currentLocation);
                 tvWayPointCounts.setText(Integer.toString(savedLocation.size()));
-            } else
+                Toast.makeText(MapActivity.this, "Добавилась новая точка", Toast.LENGTH_LONG).show();
+                updateOn = true;
+            } else {
                 Toast.makeText(MapActivity.this, "Точка не изменилась", Toast.LENGTH_LONG).show();
+                updateOn = false;
+            }
 
-        } else
+        } else {
             savedLocation.add(currentLocation);
+            updateOn = true;
+        }
+        return updateOn;
     }
 
     private void stopLocationUpdates() {
@@ -190,7 +197,7 @@ public class MapActivity extends AppCompatActivity {
         tvUpdates.setText("Геолокация включена");
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
         updateGPS();
-        //Toast.makeText(MapActivity.this, "Start Location Update", Toast.LENGTH_LONG).show();
+        Toast.makeText(MapActivity.this, "Start Location Update", Toast.LENGTH_LONG).show();
 
     }
 
@@ -218,6 +225,7 @@ public class MapActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Location location) {
                     //получили разрешения, нужно получить данные и обновить Ui
+                    Toast.makeText(MapActivity.this, "UpdateGPS", Toast.LENGTH_LONG).show();
                     updateUIValues(location);
                     currentLocation = location;             //сохраним текущую локацию
                 }
@@ -233,6 +241,8 @@ public class MapActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void updateUIValues(Location location) {
         //обновляем текстовые поля в UI
+        Toast.makeText(MapActivity.this, "UpdateUI ", Toast.LENGTH_LONG).show();
+
         if (location != null) {
             tvLat.setText(String.valueOf(location.getLatitude()));
             tvLon.setText(String.valueOf(location.getLongitude()));

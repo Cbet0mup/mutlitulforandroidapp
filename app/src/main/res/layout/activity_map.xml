@@ -14,6 +14,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="16dp"
         android:text="@string/latitude_text_main"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/_0_00"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_labellat"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,6 +35,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="16dp"
         android:text="@string/longitude_text_main"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_labellat" />
 
@@ -42,6 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/_0_00"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_labellon"
         app:layout_constraintTop_toBottomOf="@+id/tv_lat" />
 
@@ -52,6 +56,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="16dp"
         android:text="@string/altitude_text_main"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_labellon" />
 
@@ -60,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/_0_00"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_labelaltitude"
         app:layout_constraintTop_toTopOf="@+id/tv_labelaltitude" />
 
@@ -70,6 +76,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="16dp"
         android:text="@string/accurasy_text_main"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_labelaltitude" />
 
@@ -78,6 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/_0_00"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_labelaccuracy"
         app:layout_constraintTop_toTopOf="@+id/tv_labelaccuracy" />
 
@@ -88,6 +96,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="16dp"
         android:text="@string/speed_text_main"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_labelaccuracy" />
 
@@ -96,6 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/_0_00"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_labelspeed"
         app:layout_constraintTop_toTopOf="@+id/tv_labelspeed" />
 
@@ -106,6 +116,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="16dp"
         android:text="@string/sensor_text_main"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sw_gps" />
 
@@ -114,6 +125,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tvsensor_text_gsm_wifi"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_labelsensor"
         app:layout_constraintTop_toTopOf="@+id/tv_labelsensor" />
 
@@ -123,6 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:text="@string/update_text_main"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sw_locationsupdates" />
 
@@ -131,6 +144,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/off_update_text_main"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_labelupdates"
         app:layout_constraintTop_toTopOf="@+id/tv_labelupdates" />
 
@@ -139,30 +153,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#8BC34A"
-        android:backgroundTintMode="add"
-        android:buttonTint="#9E9696"
+        android:thumb="@drawable/round_thumb_switch"
+        android:track="@drawable/round_track_switch"
         android:checked="false"
+        android:showText="false"
+        android:splitTrack="false"
+        android:switchPadding="4dp"
         android:text="@string/location_update_text_main"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Switch
         android:id="@+id/sw_gps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:thumb="@drawable/round_thumb_switch"
+        android:track="@drawable/round_track_switch"
+        android:switchPadding="4dp"
         android:text="@string/gps_savepower"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_labelupdates" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_labelupdates"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <TextView
         android:id="@+id/tv_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_lbladdress"
         app:layout_constraintTop_toTopOf="@+id/tv_lbladdress" />
 
@@ -173,6 +197,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="16dp"
         android:text="@string/address_text_main"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_labelspeed" />
 
@@ -194,7 +219,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Путевые точки:"
+        android:text="@string/tv_label_crumb_count_text"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_labelsensor" />
 
@@ -203,42 +229,49 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="0"
+        android:text="@string/tv_crumb_count_text"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_label_crumb_count"
         app:layout_constraintTop_toTopOf="@+id/tv_label_crumb_count" />
 
     <Button
         android:id="@+id/btn_new_way_point"
-        android:layout_width="0dp"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:backgroundTint="#8BC34A"
-        android:text="Очистить список точек"
+        android:text="@string/btn_new_way_point_text"
         android:textColor="@color/colorPrimaryDark"
+        android:elevation="6dp"
+        android:translationZ="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_label_crumb_count" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_crumb_count"/>
 
     <Button
         android:id="@+id/btn_sho_wayPoint_list"
-        android:layout_width="0dp"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:backgroundTint="#8BC34A"
-        android:text="Поглазеть на список точек"
+        android:text="@string/btn_sho_wayPoint_list_text"
         android:textColor="@color/colorPrimaryDark"
+        android:elevation="6dp"
+        android:translationZ="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_new_way_point" />
 
     <Button
         android:id="@+id/btn_show_map"
-        android:layout_width="0dp"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:backgroundTint="#8BC34A"
-        android:text="Поглазеть на карте"
+        android:text="@string/tn_show_map_text"
         android:textColor="@color/colorPrimaryDark"
+        android:elevation="6dp"
+        android:translationZ="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_sho_wayPoint_list" />
