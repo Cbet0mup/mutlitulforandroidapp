@@ -39,5 +39,10 @@ public class AddNoteActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent intent = new Intent(this, GetNoteActivity.class);
+        startActivity(intent);
+    }
 }

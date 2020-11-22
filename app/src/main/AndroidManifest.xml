@@ -41,7 +41,6 @@
         <activity android:name=".MapActivity" />
         <activity android:name=".RedactNoteActivity" />
         <activity android:name=".TrashActivity" />
-        <activity android:name=".map.info.MapsActivity" />
         <activity android:name=".map.info.ShowSavedLocationList" />
         <activity android:name=".MainActivity">
             <intent-filter>

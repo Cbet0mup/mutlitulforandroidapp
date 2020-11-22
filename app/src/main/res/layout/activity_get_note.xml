@@ -17,20 +17,21 @@
 
     <Button
         android:id="@+id/button_add_text"
-        android:layout_width="138dp"
-        android:layout_height="59dp"
+        android:layout_width="95dp"
+        android:layout_height="44dp"
         android:layout_marginTop="513dp"
         android:layout_marginBottom="42dp"
-        android:background="@drawable/reeple_button"
+        android:background="@drawable/botton_background"
         android:onClick="addNote"
         android:text="@string/add_text_button"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="17sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/rv_notes"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.854"
+        app:layout_constraintHorizontal_bias="0.949"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rv_notes" />
+        app:layout_constraintTop_toTopOf="@+id/rv_notes"
+        app:layout_constraintVertical_bias="0.25" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

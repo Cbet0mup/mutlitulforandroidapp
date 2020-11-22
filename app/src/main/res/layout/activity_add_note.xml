@@ -6,6 +6,7 @@
     tools:context="com.pavel.multitool.AddNoteActivity"
     android:padding="16dp"
     android:background="@drawable/background_image"
+    android:gravity="center|top"
     android:orientation="vertical">
 
     <EditText
@@ -15,7 +16,8 @@
         android:layout_marginTop="16dp"
         android:padding="8dp"
         android:inputType="textCapWords"
-        android:hint="@string/add_body_new_title"/>
+        android:hint="@string/add_body_new_title"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/add_body_new_note"
@@ -25,19 +27,18 @@
         android:inputType="textMultiLine|textCapWords"
         android:lines="5"
         android:hint="@string/add_body_new_top"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="73dp"
-        android:background="@drawable/reeple_button"
-        android:textColor="@color/colorPrimaryDark"
-        android:text="@string/add_new_note_button"
-        android:textSize="17sp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/botton_background"
         android:onClick="saveNote"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        />
+        android:text="@string/add_new_note_button"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="17sp" />
 
 
 </LinearLayout>

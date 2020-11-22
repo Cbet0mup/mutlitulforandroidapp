@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_image"
     tools:context="com.pavel.multitool.RedactNoteActivity"
+    android:gravity="top|center"
     android:orientation="vertical">
 
     <TextView
@@ -32,12 +34,11 @@
 
     <Button
         android:id="@+id/redact_button_save"
-        android:layout_width="match_parent"
-        android:background="@drawable/reeple_button"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="17sp"
-        android:layout_height="73dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/botton_background"
         android:text="@string/add_new_note_button"
-        />
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="17sp" />
 
 </LinearLayout>

@@ -7,6 +7,9 @@
     <color name="color_icon_menu">#FF9FD116</color>
     <color name="switch_color_off">#6F98B3</color>
     <color name="switch_color_on">#87FF00</color>
-<!--    <color name="colorAccent">#03DAC5</color>-->
-<!--    <color name="colorAccent">#03DAC5</color>-->
+    <color name="colorButton_off">#125010</color>
+    <color name="colorButtonOn">#1CFF03</color>
+    <color name="colorButtonReeple">#0357FF</color>
+    <color name="colorButtonText">#002163</color>
+
 </resources>
