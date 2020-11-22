@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="backgroundColorApp">#3BFFC107</color>
+
     <color name="colorPrimary">#00062B</color>
     <color name="colorPrimaryDark">#110332</color>
     <color name="yellow_green">#80FF00</color>

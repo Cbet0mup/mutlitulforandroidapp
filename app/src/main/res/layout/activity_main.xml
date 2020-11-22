@@ -8,7 +8,7 @@
     android:columnCount="3"
     android:rowCount="4"
     android:layout_gravity="center"
-    android:background="@drawable/background_image"
+    android:background="@color/backgroundColorApp"
     tools:context="com.pavel.multitool.MainActivity">
 
     <androidx.cardview.widget.CardView

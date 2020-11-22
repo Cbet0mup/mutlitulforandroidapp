@@ -32,7 +32,6 @@ public class GetNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_note);
 
         init();
-
     }
 
     @Override
@@ -57,7 +56,6 @@ public class GetNoteActivity extends AppCompatActivity {
     public void addNote(View view) {
         Intent intent = new Intent(this, AddNoteActivity.class);
         startActivity(intent);
-        finish();  //закроем активити, чтобы вернуться к обновленному окну
     }
 
 
@@ -67,7 +65,7 @@ public class GetNoteActivity extends AppCompatActivity {
         init();
     }
 
-    void init(){
+    void init() {
         notesList = findViewById(R.id.rv_notes);
 
         dbHelper = new DbHelper(this);
