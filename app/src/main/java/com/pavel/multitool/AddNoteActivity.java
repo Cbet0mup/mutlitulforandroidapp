@@ -32,17 +32,8 @@ public class AddNoteActivity extends AppCompatActivity {
         } else {
             DbHelper db = new DbHelper(this);
             db.addNote(new TextTableModel(getTitle, getBody), db.TABLE_NOTES_TEXT);
-
-            Intent intent = new Intent(this, GetNoteActivity.class);
-            startActivity(intent);
+            //закрываем бесполезное окно
             finish();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Intent intent = new Intent(this, GetNoteActivity.class);
-        startActivity(intent);
     }
 }

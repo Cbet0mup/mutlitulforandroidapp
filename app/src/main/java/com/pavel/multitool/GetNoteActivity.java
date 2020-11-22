@@ -57,13 +57,13 @@ public class GetNoteActivity extends AppCompatActivity {
     public void addNote(View view) {
         Intent intent = new Intent(this, AddNoteActivity.class);
         startActivity(intent);
-        finish();  //закроем активити, чтобы вернуться к обновленному окну
     }
 
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        //обновляем табличку
         init();
     }
 

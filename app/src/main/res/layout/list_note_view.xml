@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgoundColorActivity">
+<LinearLayout
     android:id="@+id/note_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:background="@drawable/background_image"
     android:padding="16dp">
 
     <LinearLayout
@@ -26,4 +31,5 @@
 
     </LinearLayout>
 
+</LinearLayout>
 </LinearLayout>
