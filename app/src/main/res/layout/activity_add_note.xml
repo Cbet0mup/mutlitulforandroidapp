@@ -37,7 +37,7 @@
         android:background="@drawable/botton_background"
         android:onClick="saveNote"
         android:text="@string/add_new_note_button"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorButtonText"
         android:textSize="17sp" />
 
 

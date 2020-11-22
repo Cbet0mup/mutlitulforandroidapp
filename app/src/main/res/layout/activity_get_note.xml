@@ -24,7 +24,7 @@
         android:background="@drawable/botton_background"
         android:onClick="addNote"
         android:text="@string/add_text_button"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorButtonText"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/rv_notes"
         app:layout_constraintEnd_toEndOf="parent"

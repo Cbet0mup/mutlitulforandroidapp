@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/botton_background"
         android:text="@string/add_new_note_button"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorButtonText"
         android:textSize="17sp" />
 
 </LinearLayout>
