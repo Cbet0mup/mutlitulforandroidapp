@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="backgroundColorApp">#3BFFD607</color>
+
     <color name="backgoundColorActivity">#3BFFC107</color>
     <color name="colorPrimary">#00062B</color>
     <color name="colorPrimaryDark">#110332</color>

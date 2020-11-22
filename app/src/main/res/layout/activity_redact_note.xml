@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgoundColorActivity">
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_image"
+    android:background="@color/backgroundColorApp"
     tools:context="com.pavel.multitool.RedactNoteActivity"
     android:gravity="top|center"
     android:orientation="vertical">
@@ -41,10 +38,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/botton_background"
         android:text="@string/add_new_note_button"
-        android:textColor="@color/colorButtonText"
-        android:textSize="17sp"
-        android:elevation="10dp"
-        android:translationZ="9dp"/>
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="17sp" />
 
-</LinearLayout>
 </LinearLayout>
