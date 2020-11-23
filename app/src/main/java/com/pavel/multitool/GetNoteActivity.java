@@ -32,7 +32,6 @@ public class GetNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_note);
 
         init();
-
     }
 
     @Override
@@ -67,7 +66,7 @@ public class GetNoteActivity extends AppCompatActivity {
         init();
     }
 
-    void init(){
+    void init() {
         notesList = findViewById(R.id.rv_notes);
 
         dbHelper = new DbHelper(this);
