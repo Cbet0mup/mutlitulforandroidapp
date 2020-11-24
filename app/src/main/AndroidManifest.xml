@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/ic_icon_app_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MultiTool">
+        <service android:name=".map.info.ServiceMapData"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
