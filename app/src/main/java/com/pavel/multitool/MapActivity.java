@@ -51,18 +51,15 @@ public class MapActivity extends AppCompatActivity {
     private Switch swLocationUpdates, swGps;
 
     private double latitude, longitude;
-
+    //gsm/gps
     boolean locationPriority;
+    //singleton
     private LocationBreedcrumb locationBreedcrumb;
 
     //список точек локации
     List<Location> savedLocations;
-    //    private FusedLocationProviderClient fusedLocationProviderClient;
-//    private LocationRequest locationRequest;
-//    private LocationCallback locationCallback;
+
     private BroadcastReceiver broadcastReceiver;
-    //текущее местоположение
-//    private Location currentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,39 +130,6 @@ public class MapActivity extends AppCompatActivity {
             enable_buttons();
 
     }
-
-//    @SuppressLint("SetTextI18n")
-//    //стравнение данных, чтобы не забивать список дубликатами одной точки
-//    private boolean compareLatLongData() {
-//        if (savedLocation.size() > 0) {
-//            int dotLatOld = Double.toString(savedLocation.get(savedLocation.size() - 1).getLatitude()).indexOf(".");
-//            int dotLatNew = Double.toString(currentLocation.getLatitude()).indexOf(".");
-//            int dotLonOld = Double.toString(savedLocation.get(savedLocation.size() - 1).getLongitude()).indexOf(".");
-//            int dotLonNew = Double.toString(currentLocation.getLongitude()).indexOf(".");
-//
-//            String latitOld = Double.toString(savedLocation.get(savedLocation.size() - 1).getLatitude()).substring(0, dotLatOld + 3);
-//            String latitNew = Double.toString(currentLocation.getLatitude()).substring(0, dotLatNew + 3);
-//            String longitOld = Double.toString(savedLocation.get(savedLocation.size() - 1).getLongitude()).substring(0, dotLonOld + 3);
-//            String longitNew = Double.toString(currentLocation.getLongitude()).substring(0, dotLonNew + 3);
-//
-//            Toast.makeText(MapActivity.this, longitNew + " " + longitOld, Toast.LENGTH_LONG).show();
-//
-//            if (!latitNew.equalsIgnoreCase(latitOld) || !longitNew.equalsIgnoreCase(longitOld)) {
-//                savedLocation.add(currentLocation);
-//                tvWayPointCounts.setText(Integer.toString(savedLocation.size()));
-//                Toast.makeText(MapActivity.this, "Добавилась новая точка", Toast.LENGTH_LONG).show();
-//                updateOn = true;
-//            } else {
-//                Toast.makeText(MapActivity.this, "Точка не изменилась", Toast.LENGTH_LONG).show();
-//                updateOn = false;
-//            }
-//
-//        } else {
-//            //savedLocation.add(currentLocation);
-//            updateOn = true;
-//        }
-//        return updateOn;
-//    }
 
 
     private void locationNotAcces() {

@@ -18,6 +18,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.model.LatLng;
+import com.pavel.multitool.MapActivity;
 
 import java.util.List;
 
@@ -34,18 +35,18 @@ public class ServiceMapData extends Service {
     //private List<Location> savedLocation;
 
 
-    private final long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
-    private final long FASTEST_INTERVAL = 2000; /* 2 sec */
+    private final long UPDATE_INTERVAL = 30 * 1000;  /* 10 secs */
+    private final long FASTEST_INTERVAL = 5000; /* 2 sec */
 
     //текущее местоположение
-    private Location currentLocation;
+    //private Location currentLocation;
 
     @SuppressLint("MissingPermission")
     @Override
     public void onCreate() {
         super.onCreate();
         init();
-        Toast.makeText(this, "service on started", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "service on started", Toast.LENGTH_SHORT).show();
         startLocationUpdate();
 
     }
@@ -95,38 +96,37 @@ public class ServiceMapData extends Service {
         locationPriority = locationBreedcrumb.isLocationPriority();
         if (locationPriority) {
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            Toast.makeText(this, "GPS", Toast.LENGTH_SHORT).show();
-        }
-            else {
+            // Toast.makeText(this, "GPS", Toast.LENGTH_SHORT).show();
+        } else {
             mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-            Toast.makeText(this, "GSM/WIFI", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "GSM/WIFI", Toast.LENGTH_SHORT).show();
         }
 
         Intent i = new Intent("location_update");
         i.putExtra("latitude", location.getLatitude());
         i.putExtra("longitude", location.getLongitude());
-        i.putExtra("accuracy",String.valueOf(location.getAccuracy()));
+        i.putExtra("accuracy", String.valueOf(location.getAccuracy()));
 
         if (location.hasAltitude()) {
             String alt = String.valueOf(Math.round(location.getAltitude()));
             i.putExtra("altitude", alt);
         } else
-            i.putExtra("altitude",0);
+            i.putExtra("altitude", 0);
 
         if (location.hasSpeed()) {
             String speed = String.valueOf(location.getSpeed());
             i.putExtra("speed", speed);
         } else
-            i.putExtra("speed",0);
+            i.putExtra("speed", 0);
 
         Geocoder geocoder = new Geocoder(this);
 
         try {
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             String ad = addresses.get(0).getAddressLine(0);
-            i.putExtra("address",ad);
+            i.putExtra("address", ad);
         } catch (Exception e) {
-            i.putExtra("address","Данные не доступны");
+            i.putExtra("address", "Данные не доступны");
 
         }
 
@@ -134,7 +134,10 @@ public class ServiceMapData extends Service {
         sendBroadcast(i);
         // You can now create a LatLng Object for use with maps
 //        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        savedLocations.add(location);
+        if (savedLocations.isEmpty()) {
+            savedLocations.add(location);
+        } else
+            compareLatLongData(location);
 
     }
 
@@ -151,6 +154,30 @@ public class ServiceMapData extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    //@SuppressLint("SetTextI18n")
+    //стравнение данных, чтобы не забивать список дубликатами одной точки
+    private void compareLatLongData(Location location) {
+        if (savedLocations.size() > 0) {
+            int dotLatOld = Double.toString(savedLocations.get(savedLocations.size() - 1).getLatitude()).indexOf(".");
+            int dotLatNew = Double.toString(location.getLatitude()).indexOf(".");
+            int dotLonOld = Double.toString(savedLocations.get(savedLocations.size() - 1).getLongitude()).indexOf(".");
+            int dotLonNew = Double.toString(location.getLongitude()).indexOf(".");
+
+            String latitOld = Double.toString(savedLocations.get(savedLocations.size() - 1).getLatitude()).substring(0, dotLatOld + 3);
+            String latitNew = Double.toString(location.getLatitude()).substring(0, dotLatNew + 3);
+            String longitOld = Double.toString(savedLocations.get(savedLocations.size() - 1).getLongitude()).substring(0, dotLonOld + 3);
+            String longitNew = Double.toString(location.getLongitude()).substring(0, dotLonNew + 3);
+
+            if (!latitNew.equalsIgnoreCase(latitOld) || !longitNew.equalsIgnoreCase(longitOld)) {
+                savedLocations.add(location);
+                Toast.makeText(this, "Добавилась новая точка", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Точка не изменилась", Toast.LENGTH_LONG).show();
+            }
+
+        }
     }
 
 
