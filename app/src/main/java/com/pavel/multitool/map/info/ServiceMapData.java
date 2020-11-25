@@ -3,6 +3,8 @@ package com.pavel.multitool.map.info;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.IBinder;
 import android.widget.Toast;
@@ -28,11 +30,12 @@ public class ServiceMapData extends Service {
     private LocationCallback locationCallback;
     private LocationBreedcrumb locationBreedcrumb;
     private List<Location> savedLocations;
+    private boolean locationPriority;
     //private List<Location> savedLocation;
 
 
-    private final long UPDATE_INTERVAL = 30 * 1000;  /* 10 secs */
-    private final long FASTEST_INTERVAL = 5000; /* 2 sec */
+    private final long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
+    private final long FASTEST_INTERVAL = 2000; /* 2 sec */
 
     //текущее местоположение
     private Location currentLocation;
@@ -44,11 +47,14 @@ public class ServiceMapData extends Service {
         init();
         Toast.makeText(this, "service on started", Toast.LENGTH_SHORT).show();
         startLocationUpdate();
+
     }
 
     private void init() {
-        LocationBreedcrumb locationBreedcrumb = (LocationBreedcrumb) getApplicationContext();
+        locationBreedcrumb = (LocationBreedcrumb) getApplicationContext();
         savedLocations = locationBreedcrumb.getMyLocations();
+        locationPriority = locationBreedcrumb.isLocationPriority();
+
     }
 
     @SuppressLint("MissingPermission")
@@ -68,6 +74,7 @@ public class ServiceMapData extends Service {
         // https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
         SettingsClient settingsClient = LocationServices.getSettingsClient(this);
         settingsClient.checkLocationSettings(locationSettingsRequest);
+
         //callback
         locationCallback = new LocationCallback() {
             @SuppressLint("MissingPermission")
@@ -85,18 +92,48 @@ public class ServiceMapData extends Service {
     }
 
     public void onLocationChanged(Location location) {
-        // New location has now been determined
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+        locationPriority = locationBreedcrumb.isLocationPriority();
+        if (locationPriority) {
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            Toast.makeText(this, "GPS", Toast.LENGTH_SHORT).show();
+        }
+            else {
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+            Toast.makeText(this, "GSM/WIFI", Toast.LENGTH_SHORT).show();
+        }
 
         Intent i = new Intent("location_update");
         i.putExtra("latitude", location.getLatitude());
         i.putExtra("longitude", location.getLongitude());
+        i.putExtra("accuracy",String.valueOf(location.getAccuracy()));
+
+        if (location.hasAltitude()) {
+            String alt = String.valueOf(Math.round(location.getAltitude()));
+            i.putExtra("altitude", alt);
+        } else
+            i.putExtra("altitude",0);
+
+        if (location.hasSpeed()) {
+            String speed = String.valueOf(location.getSpeed());
+            i.putExtra("speed", speed);
+        } else
+            i.putExtra("speed",0);
+
+        Geocoder geocoder = new Geocoder(this);
+
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            String ad = addresses.get(0).getAddressLine(0);
+            i.putExtra("address",ad);
+        } catch (Exception e) {
+            i.putExtra("address","Данные не доступны");
+
+        }
+
+
         sendBroadcast(i);
         // You can now create a LatLng Object for use with maps
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+//        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         savedLocations.add(location);
 
     }
@@ -115,5 +152,6 @@ public class ServiceMapData extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
 
 }

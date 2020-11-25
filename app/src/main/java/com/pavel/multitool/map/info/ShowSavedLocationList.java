@@ -1,10 +1,12 @@
 package com.pavel.multitool.map.info;
 
+import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pavel.multitool.R;
@@ -28,4 +30,5 @@ public class ShowSavedLocationList extends AppCompatActivity {
 
         lv_savedLocations.setAdapter(new ArrayAdapter<Location>(this, android.R.layout.simple_list_item_1, locations));
     }
+
 }

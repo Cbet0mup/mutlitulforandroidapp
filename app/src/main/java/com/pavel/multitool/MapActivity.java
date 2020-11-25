@@ -2,10 +2,12 @@ package com.pavel.multitool;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -50,7 +52,8 @@ public class MapActivity extends AppCompatActivity {
 
     private double latitude, longitude;
 
-    boolean updateOn;
+    boolean locationPriority;
+    private LocationBreedcrumb locationBreedcrumb;
 
     //список точек локации
     List<Location> savedLocations;
@@ -65,6 +68,7 @@ public class MapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         init();
     }
@@ -76,24 +80,32 @@ public class MapActivity extends AppCompatActivity {
             broadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                        //tvLat
+                    //tvLat
 
-                   latitude = intent.getDoubleExtra("latitude", 0.0);
-                   longitude = intent.getDoubleExtra("longitude", 0.0);
-                   tvLat.setText(String.valueOf(latitude));
-                   tvLon.setText(String.valueOf(longitude));
-
-                    LocationBreedcrumb locationBreedcrumb = (LocationBreedcrumb) getApplicationContext();
-                    savedLocations = locationBreedcrumb.getMyLocations();
-                    if (savedLocations.size() > 0) {
-                        tvWayPointCounts.setText(String.valueOf(savedLocations.size()));
-                    }
+                    updateValues(intent);
 
                 }
             };
         }
         registerReceiver(broadcastReceiver, new IntentFilter("location_update"));
 
+    }
+
+    private void updateValues(Intent intent) {
+        latitude = intent.getDoubleExtra("latitude", 0.0);
+        longitude = intent.getDoubleExtra("longitude", 0.0);
+        tvLat.setText(String.valueOf(latitude));
+        tvLon.setText(String.valueOf(longitude));
+        tvAccuracy.setText(intent.getStringExtra("accuracy"));
+        tvAltitude.setText(intent.getStringExtra("altitude"));
+        tvSpeed.setText((String.valueOf(intent.getIntExtra("speed", 0))));
+        tvAddress.setText(String.valueOf(intent.getStringExtra("address")));
+
+        LocationBreedcrumb locationBreedcrumb = (LocationBreedcrumb) getApplicationContext();
+        savedLocations = locationBreedcrumb.getMyLocations();
+        if (savedLocations.size() > 0) {
+            tvWayPointCounts.setText(String.valueOf(savedLocations.size()));
+        }
     }
 
     private void init() {
@@ -114,70 +126,12 @@ public class MapActivity extends AppCompatActivity {
         btnClearPointList = findViewById(R.id.btn_sho_wayPoint_list);
         btnShowMap = findViewById(R.id.btn_show_map);
 
-        //чистка списка точек
-        btnNewWayPoints.setOnClickListener(v -> savedLocations.clear());
+        locationBreedcrumb = (LocationBreedcrumb) getApplicationContext();
+        locationPriority = locationBreedcrumb.isLocationPriority();
 
         if (!runtime_permissions())
             enable_buttons();
 
-
-        //установки запроса локации
-//        locationRequest = new LocationRequest();
-        //частота запроса
-//        locationRequest.setInterval(1000 * DEFAULT_UPDATE_INTERVAL);
-//        locationRequest.setFastestInterval(1000 * FAST_UPDATE_INTERVAL);
-//        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-
-//        locationCallback = new LocationCallback() {
-//            @SuppressLint("SetTextI18n")
-//            @Override
-//            public void onLocationResult(LocationResult locationResult) {
-//                super.onLocationResult(locationResult);
-//
-//                Toast.makeText(MapActivity.this, "Location callback", Toast.LENGTH_LONG).show();
-//                //сохраним лакацию
-//                currentLocation = locationResult.getLastLocation();
-//
-//                if (compareLatLongData()) {
-//                    updateUIValues(locationResult.getLastLocation());
-//                }
-//            }
-//        };
-
-
-//        swGps.setOnClickListener(v -> {
-//            if (swGps.isChecked()) {
-//                //приоритетно используется GPS
-//                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//                tvSensor.setText(R.string.tvsensor_text_gps);
-//            } else {                                            //приоритет gsm and wi-fi данным
-//                locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-//                tvSensor.setText(R.string.tvsensor_text_gsm_wifi);
-//            }
-//        });
-//
-//        swLocationUpdates.setOnClickListener(v -> {
-//            if (swLocationUpdates.isChecked()) {
-//                // вкл трекинг
-//                startLocationUpdates();
-//                //startService(new Intent(MapActivity.this, ServiceMapData.class));
-//            } else {
-//                //отклык трекинг
-//                stopLocationUpdates();
-//               // stopService(new Intent(MapActivity.this, ServiceMapData.class));
-//
-//            }
-//        });
-//
-//        btnClearPointList.setOnClickListener(v -> {
-//            Intent intent = new Intent(MapActivity.this, ShowSavedLocationList.class);
-//            startActivity(intent);
-//        });
-//
-//        btnShowMap.setOnClickListener(v -> {
-//            Intent i = new Intent(MapActivity.this, TrekerMapActivity.class);
-//            startActivity(i);
-//        });
     }
 
 //    @SuppressLint("SetTextI18n")
@@ -244,21 +198,22 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void enable_buttons() {
+        //чистка списка точек
+        btnNewWayPoints.setOnClickListener(v -> {
+            savedLocations.clear();
+            tvWayPointCounts.setText(String.valueOf(savedLocations.size()));
+        });
+
         swGps.setOnClickListener(v -> {
             if (swGps.isChecked()) {
                 //приоритетно используется GPS
-                //locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                Intent i = new Intent("gpsPriority");
-                i.putExtra("priority", PRIORITY_HIGH_ACCURACY);
-                sendBroadcast(i);
+                locationPriority = true;
+                locationBreedcrumb.setLocationPriority(locationPriority);
                 tvSensor.setText(R.string.tvsensor_text_gps);
-            } else {                                            //приоритет gsm and wi-fi данным
-                // locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-
-                Intent i = new Intent("gpsPriority");
-                i.putExtra("priority", PRIORITY_BALANCED_POWER_ACCURACY);
-                sendBroadcast(i);
-
+            } else {
+                //приоритет gsm and wi-fi данным
+                locationPriority = false;
+                locationBreedcrumb.setLocationPriority(locationPriority);
                 tvSensor.setText(R.string.tvsensor_text_gsm_wifi);
             }
         });
@@ -267,11 +222,9 @@ public class MapActivity extends AppCompatActivity {
             if (swLocationUpdates.isChecked()) {
                 // вкл трекинг
                 startLocationUpdates();
-                //startService(new Intent(MapActivity.this, ServiceMapData.class));
             } else {
                 //отклык трекинг
                 stopLocationUpdates();
-                // stopService(new Intent(MapActivity.this, ServiceMapData.class));
 
             }
         });
@@ -290,19 +243,17 @@ public class MapActivity extends AppCompatActivity {
     @SuppressLint("MissingPermission")
     private void startLocationUpdates() {
         tvUpdates.setText("Геолокация включена");
-//        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
+        if (locationPriority) tvSensor.setText(R.string.tvsensor_text_gps);
+            else tvSensor.setText(R.string.tvsensor_text_gsm_wifi);
+
         Intent i = new Intent(getApplicationContext(), ServiceMapData.class);
         startService(i);
-
-        //Toast.makeText(MapActivity.this, "StartLocationUpdate", Toast.LENGTH_LONG).show();
-
     }
+
     private void stopLocationUpdates() {
         locationNotAcces();
         Intent i = new Intent(getApplicationContext(), ServiceMapData.class);
         stopService(i);
-        //Toast.makeText(MapActivity.this, "service stopped", Toast.LENGTH_SHORT).show();
-//        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
 
     private boolean runtime_permissions() {
@@ -313,68 +264,6 @@ public class MapActivity extends AppCompatActivity {
             return true;
         }
         return false;
-    }
-
-//    public void updateGPS() {
-////        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            //разрешения даны
-//
-//            startLocationUpdates();
-//
-////            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-////                @Override
-////                public void onSuccess(Location location) {
-////                    //получили разрешения, нужно получить данные и обновить Ui
-////                    Toast.makeText(MapActivity.this, "UpdateGPS", Toast.LENGTH_LONG).show();
-////                    updateUIValues(location);
-////                    currentLocation = location;             //сохраним текущую локацию
-////                }
-////            });
-//        } else {
-//            //разрешения не даны
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_FINE_LOCATION);
-//            }
-//        }
-//    }
-
-    @SuppressLint("SetTextI18n")
-    private void updateUIValues(Location location) {
-        //обновляем текстовые поля в UI
-        Toast.makeText(MapActivity.this, "UpdateUI ", Toast.LENGTH_LONG).show();
-
-        if (location != null) {
-            tvLat.setText(String.valueOf(location.getLatitude()));
-            tvLon.setText(String.valueOf(location.getLongitude()));
-            tvAccuracy.setText(String.valueOf(Math.round(location.getAccuracy())));
-
-            if (location.hasAltitude()) {
-                tvAltitude.setText(String.valueOf(Math.round(location.getAltitude())));
-            } else
-                tvAltitude.setText("Не доступно");
-
-            if (location.hasSpeed()) {
-                tvSpeed.setText(String.valueOf(Math.round(location.getSpeed() * 3.6)));
-            } else
-                tvSpeed.setText("Не доступно");
-        } else locationNotAcces();
-
-        //получаем адрес
-        Geocoder geocoder = new Geocoder(this);
-
-        try {
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            tvAddress.setText(addresses.get(0).getAddressLine(0));
-        } catch (Exception e) {
-            tvAddress.setText("Данные не доступны");
-        }
-//колличество сохранённых путевых точек
-        LocationBreedcrumb locationBreedcrumb = (LocationBreedcrumb) getApplicationContext();
-        savedLocations = locationBreedcrumb.getMyLocations();
-        //savedLocation.add(currentLocation);
-
-        tvWayPointCounts.setText(savedLocations.size());
     }
 
     @Override

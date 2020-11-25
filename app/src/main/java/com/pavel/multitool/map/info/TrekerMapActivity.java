@@ -2,6 +2,12 @@ package com.pavel.multitool.map.info;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -22,11 +28,14 @@ public class TrekerMapActivity extends FragmentActivity implements OnMapReadyCal
     private GoogleMap mMap;
     private UiSettings uiSettings;
     private List<Location> savedLocations;
+    private BroadcastReceiver broadcastReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treker_map);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -36,7 +45,23 @@ public class TrekerMapActivity extends FragmentActivity implements OnMapReadyCal
         savedLocations = locationBreedcrumb.getMyLocations();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (broadcastReceiver == null) {
+            broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
 
+
+                }
+            };
+        }
+        registerReceiver(broadcastReceiver, new IntentFilter("location_update"));
+
+    }
+
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -60,5 +85,7 @@ public class TrekerMapActivity extends FragmentActivity implements OnMapReadyCal
         }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocationPlaced, 12.0f));
+        mMap.setMyLocationEnabled(true);
     }
+
 }
