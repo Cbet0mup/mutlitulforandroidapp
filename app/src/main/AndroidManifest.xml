@@ -9,6 +9,8 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the "MyLocation" functionality.
     -->
+    <!-- -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/> <!-- запрос на работу сервиса -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -22,7 +24,9 @@
         android:roundIcon="@mipmap/ic_icon_app_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MultiTool">
-        <service android:name=".map.info.ServiceMapData"/>
+        <service android:name=".map.info.service.LocationService"/>
+        <service android:name=".map.info.ServiceMapData"
+            android:foregroundServiceType="location"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

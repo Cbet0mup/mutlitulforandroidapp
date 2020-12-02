@@ -1,15 +1,23 @@
 package com.pavel.multitool.map.info;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.IBinder;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -17,8 +25,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.maps.model.LatLng;
-import com.pavel.multitool.MapActivity;
+import com.pavel.multitool.R;
 
 import java.util.List;
 
@@ -26,6 +33,7 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 
 
 public class ServiceMapData extends Service {
+    private static final String CHANNEL_ID = "com.pavel.multitool.map.info";
     //private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest mLocationRequest;
     private LocationCallback locationCallback;
@@ -35,20 +43,61 @@ public class ServiceMapData extends Service {
     //private List<Location> savedLocation;
 
 
-    private final long UPDATE_INTERVAL = 30 * 1000;  /* 10 secs */
-    private final long FASTEST_INTERVAL = 5000; /* 2 sec */
+    private final long UPDATE_INTERVAL = 15 * 1000;  /* 10 secs */
+    private final long FASTEST_INTERVAL = 3000; /* 2 sec */
 
     //текущее местоположение
     //private Location currentLocation;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission")
     @Override
     public void onCreate() {
         super.onCreate();
+
+
         init();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            startMyOwnForeground();
+        else
+            startForeground(1, new Notification());
         // Toast.makeText(this, "service on started", Toast.LENGTH_SHORT).show();
         startLocationUpdate();
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startMyOwnForeground(){
+        //Главное, правилное уведомление состряпать
+        String channelName = "Service GPS";
+        NotificationChannel chan = new NotificationChannel(CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+        chan.setLightColor(Color.BLUE);
+        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        manager.createNotificationChannel(chan);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(R.drawable.ic_baseline_coronavirus_24)
+                .setContentTitle("Сервис геолокации включен.")
+                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build();
+        startForeground(2, notification);
+    }
+
+    //    START_NOT_STICKY – сервис не будет перезапущен после того, как был убит системой
+//
+//    START_STICKY – сервис будет перезапущен после того, как был убит системой
+//
+//    START_REDELIVER_INTENT – сервис будет перезапущен после того, как был убит системой. Кроме этого, сервис снова получит все вызовы startService, которые не были завершены методом stopSelf(startId).
+//
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        return START_STICKY;
     }
 
     private void init() {
@@ -117,7 +166,7 @@ public class ServiceMapData extends Service {
             String speed = String.valueOf(location.getSpeed());
             i.putExtra("speed", speed);
         } else
-            i.putExtra("speed", 0);
+            i.putExtra("speed", "0");
 
         Geocoder geocoder = new Geocoder(this);
 
@@ -147,7 +196,7 @@ public class ServiceMapData extends Service {
         super.onDestroy();
         Toast.makeText(this, "service on destroyed", Toast.LENGTH_SHORT).show();
         getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback);
-        stopSelf();
+        stopForeground(true);
     }
 
     @Nullable

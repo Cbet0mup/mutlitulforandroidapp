@@ -2,15 +2,12 @@ package com.pavel.multitool;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,31 +17,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.pavel.multitool.map.info.LocationBreedcrumb;
 import com.pavel.multitool.map.info.ServiceMapData;
 import com.pavel.multitool.map.info.ShowSavedLocationList;
 import com.pavel.multitool.map.info.TrekerMapActivity;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 
 public class MapActivity extends AppCompatActivity {
 
-    //    public static final int DEFAULT_UPDATE_INTERVAL = 30;
-//    public static final int FAST_UPDATE_INTERVAL = 5;
-    public static final int PRIORITY_HIGH_ACCURACY = 100;
-    public static final int PRIORITY_BALANCED_POWER_ACCURACY = 102;
     private static final int PERMISSIONS_FINE_LOCATION = 99;
     private TextView tvLat, tvLon, tvAltitude, tvAccuracy, tvSpeed, tvSensor, tvUpdates, tvAddress, tvWayPointCounts;
     private Button btnNewWayPoints, btnClearPointList, btnShowMap;
@@ -61,6 +47,7 @@ public class MapActivity extends AppCompatActivity {
 
     private BroadcastReceiver broadcastReceiver;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +82,7 @@ public class MapActivity extends AppCompatActivity {
         tvLon.setText(String.valueOf(longitude));
         tvAccuracy.setText(intent.getStringExtra("accuracy"));
         tvAltitude.setText(intent.getStringExtra("altitude"));
-        tvSpeed.setText((String.valueOf(intent.getIntExtra("speed", 0))));
+        tvSpeed.setText((String.valueOf(intent.getStringExtra("speed"))));
         tvAddress.setText(String.valueOf(intent.getStringExtra("address")));
 
         LocationBreedcrumb locationBreedcrumb = (LocationBreedcrumb) getApplicationContext();
@@ -105,6 +92,7 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void init() {
         tvLat = findViewById(R.id.tv_lat);
         tvLon = findViewById(R.id.tv_lon);
@@ -144,6 +132,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -161,6 +150,7 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void enable_buttons() {
         //чистка списка точек
         btnNewWayPoints.setOnClickListener(v -> {
@@ -204,6 +194,7 @@ public class MapActivity extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission")
     private void startLocationUpdates() {
         tvUpdates.setText("Геолокация включена");
@@ -212,6 +203,7 @@ public class MapActivity extends AppCompatActivity {
 
         Intent i = new Intent(getApplicationContext(), ServiceMapData.class);
         startService(i);
+
     }
 
     private void stopLocationUpdates() {
@@ -235,6 +227,8 @@ public class MapActivity extends AppCompatActivity {
         if (broadcastReceiver != null) {
             unregisterReceiver(broadcastReceiver);
         }
+        Intent i = new Intent(getApplicationContext(), ServiceMapData.class);
+        stopService(i);
         super.onDestroy();
     }
 }
